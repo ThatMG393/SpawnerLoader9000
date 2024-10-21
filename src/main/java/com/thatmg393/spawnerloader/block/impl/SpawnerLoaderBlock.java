@@ -6,7 +6,7 @@ import com.thatmg393.spawnerloader.SpawnerLoader9000;
 import com.thatmg393.spawnerloader.block.base.BlockExt;
 
 import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.BlockState
+import net.minecraft.block.BlockState;
 import net.minecraft.util.Identifier;
 
 public class SpawnerLoaderBlock extends BlockExt implements PolymerBlock {
