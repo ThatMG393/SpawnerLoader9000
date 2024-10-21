@@ -17,7 +17,7 @@ jobs:
       contents: write
     strategy:
       matrix:
-        java: [ 17, 21 ]
+        java: [ 21 ]
         os: [ ubuntu-22.04 ]
     runs-on: ${{ matrix.os }}
     steps:
@@ -43,14 +43,14 @@ jobs:
         run: bash build.sh ${{ github.ref }}
 
       - name: Capture build artifacts
-        if: ${{ matrix.java == '17' }}
+        if: ${{ matrix.java == '21' }}
         uses: actions/upload-artifact@v4
         with:
           name: tpa4fabric-build
           path: build/libs/
 
       - name: Update CHANGELOG.md
-        if: ${{ matrix.java == '17' && startsWith(steps.build_bin.outputs.binver, 'v') }}
+        if: ${{ matrix.java == '21' && startsWith(steps.build_bin.outputs.binver, 'v') }}
         uses: requarks/changelog-action@v1.10.2
         with:
           token: ${{ secrets.GH_TOKEN }}
@@ -61,7 +61,7 @@ jobs:
           reverseOrder: true
 
       - name: Upload to Modrinth and Github
-        if: ${{ matrix.java == '17' && startsWith(steps.build_bin.outputs.binver, 'v') }}
+        if: ${{ matrix.java == '21' && startsWith(steps.build_bin.outputs.binver, 'v') }}
         uses: Kir-Antipov/mc-publish@v3.3
         with: 
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
@@ -77,7 +77,7 @@ jobs:
           changelog-file: CHANGELOG.md
 
       - name: Commit CHANGELOG.md
-        if: ${{ matrix.java == '17' && startsWith(steps.build_bin.outputs.binver, 'v') }}
+        if: ${{ matrix.java == '21' && startsWith(steps.build_bin.outputs.binver, 'v') }}
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           branch: master
