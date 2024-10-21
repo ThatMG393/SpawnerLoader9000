@@ -64,8 +64,6 @@ public class MobSpawnerLogicMixin {
         @Nullable EntityData entityData, ServerWorld world2, BlockPos pos
     ) {
         SpawnerEntityData spawnerData = new SpawnerEntityData(pos);
-        mobEntity.initialize(world, world.getLocalDifficulty(pos), SpawnReason.SPAWNER, spawnerData);
-
-        return spawnerData;
+        return mobEntity.initialize(world, world.getLocalDifficulty(pos), SpawnReason.SPAWNER, spawnerData);
     }
 }
