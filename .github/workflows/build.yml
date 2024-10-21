@@ -39,7 +39,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Fabric generate data
-        run: ./gradlew runGendata
+        run: ./gradlew runDatagen
 
       - name: Build mod
         id: build_bin
