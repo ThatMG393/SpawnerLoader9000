@@ -23,8 +23,9 @@ public class SpawnerLoaderBlockItem extends BlockItem implements PolymerItem {
 		return Registries.ITEM.get(Identifier.of("minecraft", "stone"));
 	}
 
+	/*
 	@Override
 	public Identifier getPolymerResourceLocation() {
 		return Identifier.of(SpawnerLoader9000.MOD_ID, "block/spawner_loader_block");
-	}
+	} */
 }
