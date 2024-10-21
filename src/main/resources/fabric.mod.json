@@ -18,7 +18,7 @@
 			"com.thatmg393.spawnerloader.SpawnerLoader9000"
 		],
 		"fabric-datagen": [
-			"com.thatmg393.spawnerloader.SpawnerLoader9000DataGenerator"
+			"com.thatmg393.spawnerloader.datagen.SpawnerLoader9000DataGenerator"
 		]
 	},
 	"mixins": [

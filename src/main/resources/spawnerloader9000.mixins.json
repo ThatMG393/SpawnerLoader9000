@@ -3,6 +3,7 @@
 	"package": "com.thatmg393.spawnerloader.mixins",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
+		"MobEntityMixin",
 		"MobSpawnerLogicMixin"
 	],
 	"injectors": {
