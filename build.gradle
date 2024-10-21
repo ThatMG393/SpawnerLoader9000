@@ -50,3 +50,11 @@ jar {
 		rename { "${it}_${project.base.archivesName.get()}"}
 	}
 }
+
+task copyGeneratedData(type: Copy) {
+    from file("$buildDir/generated/resources")
+    into file("src/main/resources")
+}
+
+runDatagen.finalizedBy(copyGeneratedData)
+build.dependsOn copyGeneratedData
