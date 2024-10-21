@@ -1,6 +1,6 @@
 package com.thatmg393.spawnerloader.block.impl;
 
-import eu.pb4.polymer.core.api.block.PolymerBlock;
+import eu.pb4.polymer.core.api.block.StatelessPolymerBlock;
 
 import com.thatmg393.spawnerloader.SpawnerLoader9000;
 import com.thatmg393.spawnerloader.block.base.BlockExt;
@@ -10,7 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Identifier;
 
-public class SpawnerLoaderBlock extends BlockExt implements PolymerBlock {
+public class SpawnerLoaderBlock extends BlockExt implements StatelessPolymerBlock {
     public static final Identifier BLOCK_ID = Identifier.of(SpawnerLoader9000.MOD_ID, "spawner_loader_block");
     public SpawnerLoaderBlock(AbstractBlock.Settings settings) {
         super(settings);
@@ -27,12 +27,7 @@ public class SpawnerLoaderBlock extends BlockExt implements PolymerBlock {
 	}
 
 	@Override
-	public BlockState getPolymerBlockState(BlockState state) {
-		return Blocks.STONE.getDefaultState();
-	}
-
-	@Override
 	public Identifier getPolymerResourceLocation() {
-		return new Identifier(SpawnerLoader9000.MOD_ID, "block/spawner_loader_block");
+		return Identifier.of(SpawnerLoader9000.MOD_ID, "block/spawner_loader_block");
 	}
 }

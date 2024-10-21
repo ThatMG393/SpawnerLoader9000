@@ -23,12 +23,7 @@ public class SpawnerLoaderBlockItem extends BlockItem implements PolymerItem {
 	}
 
 	@Override
-	public ItemStack getPolymerItemStack(ItemStack itemStack, ServerPlayerEntity player) {
-		return new ItemStack(Items.STONE);
-	}
-
-	@Override
 	public Identifier getPolymerResourceLocation() {
-		return new Identifier(SpawnerLoader9000.MOD_ID, "block/spawner_loader_block");
+		return Identifier.of(SpawnerLoader9000.MOD_ID, "block/spawner_loader_block");
 	}
 }
