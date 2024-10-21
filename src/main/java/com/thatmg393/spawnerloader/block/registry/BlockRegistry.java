@@ -1,18 +1,13 @@
 package com.thatmg393.spawnerloader.block.registry;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.thatmg393.spawnerloader.SpawnerLoader9000;
 import com.thatmg393.spawnerloader.block.base.BlockExt;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 
