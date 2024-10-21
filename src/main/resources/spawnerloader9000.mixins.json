@@ -1,9 +1,9 @@
 {
 	"required": true,
-	"package": "com.thatmg393.spawnerloader.mixin",
-	"compatibilityLevel": "JAVA_21",
+	"package": "com.thatmg393.spawnerloader.mixins",
+	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"ExampleMixin"
+		"MobSpawnerLogicMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

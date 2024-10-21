@@ -1,24 +1,45 @@
 package com.thatmg393.spawnerloader;
 
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.item.Item;
+import net.minecraft.resource.featuretoggle.FeatureFlag;
+import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.util.Rarity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.thatmg393.spawnerloader.block.impl.SpawnerLoaderBlock;
+import com.thatmg393.spawnerloader.block.impl.blockitem.SpawnerLoaderBlockItem;
+import com.thatmg393.spawnerloader.block.registry.BlockRegistry;
+
 public class SpawnerLoader9000 implements ModInitializer {
 	public static final String MOD_ID = "spawnerloader9000";
-
-	// This logger is used to write text to the console and the log file.
-	// It is considered best practice to use your mod id as the logger's name.
-	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	@Override
 	public void onInitialize() {
-		// This code runs as soon as Minecraft is in a mod-load-ready state.
-		// However, some things (like resources) may still be uninitialized.
-		// Proceed with mild caution.
+		LOGGER.info("what is this name T-T /\\");
 
-		LOGGER.info("Hello Fabric world!");
+		BlockRegistry.<SpawnerLoaderBlock, SpawnerLoaderBlockItem>register(
+			new BlockRegistry.Entry<>(
+				new SpawnerLoaderBlock(
+					AbstractBlock.Settings.create()
+						.allowsSpawning((state, world, pos, type) -> false)
+						.hardness(30)
+						.resistance(1)
+						.solid()
+						.sounds(BlockSoundGroup.ANVIL)
+				),
+				(block) -> {
+					return new SpawnerLoaderBlockItem(
+						block,
+						new Item.Settings()
+							.rarity(Rarity.UNCOMMON)
+					);
+				}
+			)
+		);
 	}
 }
