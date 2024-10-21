@@ -1,7 +1,7 @@
 package com.thatmg393.spawnerloader.datagen;
 
 import com.thatmg393.spawnerloader.SpawnerLoader9000;
-import com.thatmg393.spawnerloader.recipe.SpawnerLoaderRecipeGenerator;
+import com.thatmg393.spawnerloader.datagen.recipe.SpawnerLoaderRecipeGenerator;
 
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
