@@ -9,6 +9,7 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registries;
 
 public class SpawnerLoaderBlock extends BlockExt implements StatelessPolymerBlock {
     public static final Identifier BLOCK_ID = Identifier.of(SpawnerLoader9000.MOD_ID, "spawner_loader_block");
@@ -23,7 +24,7 @@ public class SpawnerLoaderBlock extends BlockExt implements StatelessPolymerBloc
 
 	@Override
 	public Block getPolymerBlock(BlockState state) {
-		return Blocks.STONE;
+		return Registries.BLOCK.get(Identifier.of("minecraft", "stone"));
 	}
 
 	@Override

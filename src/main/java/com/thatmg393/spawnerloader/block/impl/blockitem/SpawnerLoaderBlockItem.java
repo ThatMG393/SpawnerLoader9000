@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registries;
 
 public class SpawnerLoaderBlockItem extends BlockItem implements PolymerItem {
     public SpawnerLoaderBlockItem(Block block, Item.Settings settings) {
@@ -19,7 +20,7 @@ public class SpawnerLoaderBlockItem extends BlockItem implements PolymerItem {
 
 	@Override
 	public Item getPolymerItem(ItemStack itemStack, ServerPlayerEntity player) {
-		return Items.STONE;
+		return Registries.ITEM.get(Identifier.of("minecraft", "stone"));
 	}
 
 	@Override
