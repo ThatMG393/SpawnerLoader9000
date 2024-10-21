@@ -1,4 +1,4 @@
-package com.thatmg393.datagen;
+package com.thatmg393.spawnerloader.datagen;
 
 import java.util.function.Consumer;
 

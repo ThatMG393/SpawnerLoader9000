@@ -8,12 +8,13 @@ import net.minecraft.block.Block;
 import net.minecraft.util.Identifier;
 
 public class SpawnerLoaderBlock extends BlockExt {
+    public static final Identifier BLOCK_ID = Identifier.of(SpawnerLoader9000.MOD_ID, "spawner_loader_block");
     public SpawnerLoaderBlock(AbstractBlock.Settings settings) {
         super(settings);
     }
 
     @Override
     public Identifier getBlockID() {
-        return Identifier.of(SpawnerLoader9000.MOD_ID, "spawner_loader_block");
+        return BLOCK_ID;
     }
 }
