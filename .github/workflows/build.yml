@@ -38,6 +38,9 @@ jobs:
       - name: Make gradle wrapper executable
         run: chmod +x ./gradlew
 
+      - name: Fabric generate data
+        run: ./gradlew runGendata
+
       - name: Build mod
         id: build_bin
         run: bash build.sh ${{ github.ref }}
@@ -46,7 +49,7 @@ jobs:
         if: ${{ matrix.java == '21' }}
         uses: actions/upload-artifact@v4
         with:
-          name: tpa4fabric-build
+          name: sl9k-builds
           path: build/libs/
 
       - name: Update CHANGELOG.md
@@ -67,8 +70,8 @@ jobs:
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           github-token: ${{ secrets.GH_TOKEN }}
 
-          name: TPA4Fabric ${{ steps.build_bin.outputs.binver }}
-          files: build/libs/tpa4fabric-${{ steps.build_bin.outputs.binver }}.jar
+          name: SpawnerLoader9000 ${{ steps.build_bin.outputs.binver }}
+          files: build/libs/spawnerloader9000-${{ steps.build_bin.outputs.binver }}.jar
           version-type: release
  
           github-generate-changelog: true
