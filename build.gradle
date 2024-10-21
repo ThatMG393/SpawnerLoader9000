@@ -50,10 +50,16 @@ jar {
 	}
 }
 
-task copyGeneratedData(type: Copy) {
-    from file("$buildDir/generated/resources")
-    into file("src/main/resources")
+task cleanGeneratedData(type: Delete) {
+    delete fileTree("src/main/resources/data")
 }
 
-runDatagen.finalizedBy(copyGeneratedData)
-build.dependsOn copyGeneratedData
+task copyGeneratedData(type: Copy) {
+    from file("src/main/generated")
+    into file("src/main/resources")
+	exclude '.*'
+	duplicatesStrategy 'inherit'
+}
+
+processResources.dependsOn cleanGeneratedData
+runDatagen.finalizedBy copyGeneratedData
