@@ -11,6 +11,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.thatmg393.spawnerloader.SpawnerLoader9000;
 
+import net.minecraft.advancement.criterion.InventoryChangedCriterion;
 import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
 import net.minecraft.recipe.book.RecipeCategory;
@@ -44,29 +45,31 @@ public class ShapedRecipeJsonLoader {
             RecipeCategory category = RecipeCategory.valueOf(elementRoot.getAsJsonObject().get("category").getAsString().toUpperCase());
 
             JsonObject objectResult = elementRoot.getAsJsonObject().get("result").getAsJsonObject();
-            ShapedRecipeJsonBuilder srjb = ShapedRecipeJsonBuilder.create(category, () -> {
-                String ns = objectResult.get("item").getAsString().split("[:]", 1)[0];
-                String id = objectResult.get("item").getAsString().split("[:]", 1)[1];
-
-                return Registries.ITEM.get(Identifier.of(ns, id));
-            }, objectResult.get("count").getAsInt());
+            ShapedRecipeJsonBuilder srjb = ShapedRecipeJsonBuilder.create(
+                category,
+                () -> Registries.ITEM.get(getIDFromString(objectResult.get("item").getAsString())),
+                objectResult.get("count").getAsInt()
+            );
 
             JsonArray arrayPattern = elementRoot.getAsJsonObject().get("pattern").getAsJsonArray();
-            arrayPattern.asList().forEach((e) -> {
-                srjb.pattern(e.getAsString());
-            });
+            arrayPattern.asList().forEach(e -> srjb.pattern(e.getAsString()));
 
             JsonObject objectKey = elementRoot.getAsJsonObject().get("key").getAsJsonObject();
             objectKey.asMap().forEach((k, v) -> {
                 JsonObject objectChar = v.getAsJsonObject();
-
-                String ns = objectChar.get("item").getAsString().split("[:]", 1)[0];
-                String id = objectChar.get("item").getAsString().split("[:]", 1)[1];
-
-                srjb.input(k.charAt(0), TagKey.of(Registries.ITEM.getKey(), Identifier.of(ns, id)));
+                srjb.input(k.charAt(0), TagKey.of(Registries.ITEM.getKey(), getIDFromString(objectChar.get("item").getAsString())));
             });
 
+            srjb.criterion("has_diamonds", InventoryChangedCriterion.Conditions.items(
+                () -> Registries.ITEM.get(getIDFromString("minecraft:diamond")
+            )));
+
             return srjb;
+        }
+
+        private Identifier getIDFromString(String s) {
+            String[] s1 = s.split(":");
+            return Identifier.of(s1[0], s1[1]);
         }
     }
 }

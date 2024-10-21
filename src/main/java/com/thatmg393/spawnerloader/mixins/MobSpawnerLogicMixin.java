@@ -5,17 +5,13 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-
 import com.thatmg393.spawnerloader.block.base.BlockExt;
 import com.thatmg393.spawnerloader.block.impl.SpawnerLoaderBlock;
 import com.thatmg393.spawnerloader.entity.data.SpawnerEntityData;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.spawner.MobSpawnerLogic;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.mob.MobEntity;

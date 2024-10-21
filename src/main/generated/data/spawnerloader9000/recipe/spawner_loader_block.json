@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "minecraft:diamond"
+    },
+    "$": {
+      "tag": "minecraft:beacon"
+    },
+    "^": {
+      "tag": "minecraft:crying_obsidian"
+    }
+  },
+  "pattern": [
+    "###",
+    "#$#",
+    "^^^"
+  ],
+  "result": {
+    "count": 1,
+    "id": "spawnerloader9000:spawner_loader_block"
+  }
+}
