@@ -2,10 +2,13 @@
 # Please adjust to your needs (see https://www.gitpod.io/docs/introduction/learn-gitpod/gitpod-yaml)
 # and commit this file to your remote git repository to share the goodness with others.
 
-image: gitpod/workspace-full-vnc
+image:
+  file: .gitpod/Dockerfile
 
 tasks:
-  - init: rm -rf ~/.sdkman && curl -s "https://get.sdkman.io" | bash && sdk install java 21.0.5-graal
+  - name: Install GraalJVM 21 (via SDKMAN!)
+    before: rm -rf ~/.sdkman && curl -s "https://get.sdkman.io" | bash
+    command: sdk install java 21.0.5-graal
 
 ports:
   - port: 6080
