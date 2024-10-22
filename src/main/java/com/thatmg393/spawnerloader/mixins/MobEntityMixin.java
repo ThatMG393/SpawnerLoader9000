@@ -40,7 +40,7 @@ public class MobEntityMixin {
     private void cannotDespawnInj(CallbackInfoReturnable<Boolean> cir) {
         World world = ((MobEntity) (Object) this).getEntityWorld();
 
-        if (!world.isClient && spawnReason == SpawnReason.SPAWNER) {
+        if (!world.isClient && spawnReason == SpawnReason.SPAWNER && spawnerPos != null) {
             try {
                 BlockState blockState = world.getBlockState(spawnerPos.up());
 

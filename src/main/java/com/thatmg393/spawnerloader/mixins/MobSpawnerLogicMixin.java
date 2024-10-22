@@ -15,6 +15,7 @@ import net.minecraft.block.spawner.MobSpawnerLogic;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LocalDifficulty;
@@ -43,16 +44,6 @@ public class MobSpawnerLogicMixin {
         }
     }
 
-    /*
-    @Inject(method = "serverTick", at = @At(value = "INVOKE", 
-            target = "Lnet/minecraft/entity/mob/MobEntity;initialize(Lnet/minecraft/world/ServerWorldAccess;Lnet/minecraft/world/LocalDifficulty;Lnet/minecraft/entity/SpawnReason;Lnet/minecraft/entity/EntityData;Lnet/minecraft/nbt/NbtCompound;)Lnet/minecraft/entity/EntityData;"),
-            locals = LocalCapture.CAPTURE_FAILHARD)
-    private void serverTickInj(ServerWorld world, BlockPos pos, CallbackInfo ci, double d, double e, int i, Entity entity) {
-        if (entity instanceof MobEntity mobEntity) {
-            SpawnerEntityData spawnerData = new SpawnerEntityData(pos);
-            mobEntity.initialize(world, world.getLocalDifficulty(pos), SpawnReason.SPAWNER, spawnerData);
-        }
-    } */
 
     @Redirect(
         method = "serverTick", 
@@ -63,7 +54,9 @@ public class MobSpawnerLogicMixin {
         LocalDifficulty difficulty, SpawnReason spawnReason, 
         @Nullable EntityData entityData, ServerWorld world2, BlockPos pos
     ) {
-        SpawnerEntityData spawnerData = new SpawnerEntityData(pos);
-        return mobEntity.initialize(world, world.getLocalDifficulty(pos), SpawnReason.SPAWNER, spawnerData);
+        if (!(mobEntity instanceof PassiveEntity))
+            return mobEntity.initialize(world, difficulty, spawnReason, new SpawnerEntityData(pos));
+        
+        return mobEntity.initialize(world, difficulty, spawnReason, entityData);
     }
 }
