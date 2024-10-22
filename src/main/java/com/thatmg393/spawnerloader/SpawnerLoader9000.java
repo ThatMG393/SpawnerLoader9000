@@ -28,7 +28,7 @@ public class SpawnerLoader9000 implements ModInitializer {
 		BlockRegistry.<SpawnerLoaderBlock, SpawnerLoaderBlockItem>register(
 			new BlockRegistry.Entry<>(
 				new SpawnerLoaderBlock(
-					AbstractBlock.Settings.copy(Blocks.STONE)
+					AbstractBlock.Settings.copy(Blocks.COBBLESTONE)
 						.allowsSpawning((state, world, pos, type) -> false)
 						.hardness(3.75f)
 						.resistance(6)
