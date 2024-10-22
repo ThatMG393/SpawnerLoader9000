@@ -12,6 +12,7 @@ import com.thatmg393.spawnerloader.block.registry.BlockRegistry;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Rarity;
@@ -27,10 +28,10 @@ public class SpawnerLoader9000 implements ModInitializer {
 		BlockRegistry.<SpawnerLoaderBlock, SpawnerLoaderBlockItem>register(
 			new BlockRegistry.Entry<>(
 				new SpawnerLoaderBlock(
-					AbstractBlock.Settings.create()
+					AbstractBlock.Settings.copy(Blocks.STONE)
 						.allowsSpawning((state, world, pos, type) -> false)
-						.hardness(30)
-						.resistance(1)
+						.hardness(3.75f)
+						.resistance(6)
 						.solid()
 						.sounds(BlockSoundGroup.ANVIL)
 				),
