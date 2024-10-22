@@ -1,7 +1,5 @@
 package com.thatmg393.spawnerloader;
 
-import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +9,6 @@ import com.thatmg393.spawnerloader.block.registry.BlockRegistry;
 import com.thatmg393.spawnerloader.polymer.PolymerIntegrationEntrypoint;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 
 public class SpawnerLoader9000 implements ModInitializer {

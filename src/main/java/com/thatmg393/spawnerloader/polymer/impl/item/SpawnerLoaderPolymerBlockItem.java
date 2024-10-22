@@ -5,6 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 
 import com.thatmg393.spawnerloader.block.impl.blockitem.SpawnerLoaderBlockItem;
+import com.thatmg393.spawnerloader.utils.IdentifierUtils;
 
 import eu.pb4.polymer.core.api.item.PolymerItem;
 import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
@@ -32,11 +33,13 @@ public class SpawnerLoaderPolymerBlockItem extends SpawnerLoaderBlockItem implem
 
     @Override
     public int getPolymerCustomModelData(ItemStack itemStack, @Nullable ServerPlayerEntity player) {
-        return PolymerResourcePackUtils.requestModel(getPolymerItem(), getCorrelatingBlock().getBlockID()).value();
+        return PolymerResourcePackUtils.requestModel(getPolymerItem(), IdentifierUtils.getIdentifier("item/spawner_loader_block")).value();
     }
 
     @Override
     public void modifyClientTooltip(List<Text> tooltip, ItemStack stack, @Nullable ServerPlayerEntity player) {
+        tooltip.add(Text.literal("Place this on top of a spawner and see the magic happen!").formatted(Formatting.ITALIC));
+        tooltip.add(Text.literal(""));
         tooltip.add(Text.literal("The spawner loader.").formatted(Formatting.BOLD));
     }
 }

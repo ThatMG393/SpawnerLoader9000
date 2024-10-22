@@ -59,11 +59,12 @@ public class MobSpawnerLogicMixin {
     ) {
         SpawnerLoader9000.LOGGER.info(
             "Spawning entity -> " + mobEntity.getClass().getName() +
-            " on pos -> " + pos.toShortString()
+            " on pos -> " + pos.toShortString() +
+            " which is a " + world.getBlockState(pos).getBlock().getClass().getName()
         );
 
         if (mobEntity instanceof PassiveEntity passiveEntity) {
-            PassiveEntitySpawnerData d = new PassiveEntitySpawnerData(true);
+            PassiveEntitySpawnerData d = new PassiveEntitySpawnerData(false);
             d.setSpawnerPosition(pos);
 
             return passiveEntity.initialize(world, difficulty, spawnReason, d);
