@@ -25,7 +25,8 @@ public class SpawnerLoaderBlock extends BlockExt implements PolymerTexturedBlock
 				.resistance(8)
 				.hardness(8)
 				.requiresTool()
-				.sounds(BlockSoundGroup.ANVIL));
+				.sounds(BlockSoundGroup.ANVIL)
+				.luminance((state) -> 0));
     }
 
     @Override

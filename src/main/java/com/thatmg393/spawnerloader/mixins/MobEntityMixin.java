@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.thatmg393.spawnerloader.block.base.BlockExt;
 import com.thatmg393.spawnerloader.block.impl.SpawnerLoaderBlock;
 import com.thatmg393.spawnerloader.entity.data.SpawnerEntityData;
+import com.thatmg393.spawnerloader.entity.data.base.SpawnerPositionGetter;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityData;
@@ -30,9 +31,8 @@ public class MobEntityMixin {
     @Inject(method = "initialize", at = @At("HEAD"), cancellable = false)
     private void initializeInj(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, CallbackInfoReturnable<EntityData> cir) {
         this.spawnReason = spawnReason;
-        if (spawnReason == SpawnReason.SPAWNER
-         && entityData instanceof SpawnerEntityData) {
-            this.spawnerPos = ((SpawnerEntityData) entityData).getSpawnerPos();
+        if (spawnReason == SpawnReason.SPAWNER && entityData instanceof SpawnerPositionGetter spawnerPositionGetter) {
+            this.spawnerPos = spawnerPositionGetter.getSpawnerPosition();
         }
     }
 

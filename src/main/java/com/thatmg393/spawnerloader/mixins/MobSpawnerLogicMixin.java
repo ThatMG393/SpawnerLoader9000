@@ -6,8 +6,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import com.thatmg393.spawnerloader.SpawnerLoader9000;
 import com.thatmg393.spawnerloader.block.base.BlockExt;
 import com.thatmg393.spawnerloader.block.impl.SpawnerLoaderBlock;
+import com.thatmg393.spawnerloader.entity.data.PassiveEntitySpawnerData;
 import com.thatmg393.spawnerloader.entity.data.SpawnerEntityData;
 
 import net.minecraft.block.BlockState;
@@ -54,9 +57,18 @@ public class MobSpawnerLogicMixin {
         LocalDifficulty difficulty, SpawnReason spawnReason, 
         @Nullable EntityData entityData, ServerWorld world2, BlockPos pos
     ) {
-        if (!(mobEntity instanceof PassiveEntity))
+        SpawnerLoader9000.LOGGER.info(
+            "Spawning entity -> " + mobEntity.getClass().getName() +
+            " on pos -> " + pos.toShortString()
+        );
+
+        if (mobEntity instanceof PassiveEntity passiveEntity) {
+            PassiveEntitySpawnerData d = new PassiveEntitySpawnerData(true);
+            d.setSpawnerPosition(pos);
+
+            return passiveEntity.initialize(world, difficulty, spawnReason, d);
+        } else {
             return mobEntity.initialize(world, difficulty, spawnReason, new SpawnerEntityData(pos));
-        
-        return mobEntity.initialize(world, difficulty, spawnReason, entityData);
+        }
     }
 }

@@ -31,7 +31,7 @@ public class SpawnerLoaderBlockItem extends BlockItem implements PolymerItem {
 
 	@Override
 	public Item getPolymerItem(ItemStack itemStack, ServerPlayerEntity player) {
-		return Items.BEACON;
+		return Items.COPPER_BULB;
 	}
 
 	@Override
