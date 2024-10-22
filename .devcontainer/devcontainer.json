@@ -3,10 +3,10 @@
     "image": "mcr.microsoft.com/devcontainers/base:bullseye",
     "features": {
         "ghcr.io/devcontainers/features/java:1": {
-            "version": "21",
+            "version": "21.0.5",
             "installMaven": "false",
             "installGradle": "true",
-            "jdkDistro": "tem"
+            "jdkDistro": "graal"
         },
         "ghcr.io/devcontainers/features/desktop-lite:1": {}
     },
