@@ -8,7 +8,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.thatmg393.spawnerloader.block.base.BlockExt;
 import com.thatmg393.spawnerloader.block.impl.SpawnerLoaderBlock;
-import com.thatmg393.spawnerloader.entity.data.SpawnerEntityData;
 import com.thatmg393.spawnerloader.entity.data.base.SpawnerPositionGetter;
 
 import net.minecraft.block.BlockState;

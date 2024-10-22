@@ -20,17 +20,17 @@ public class SpawnerLoader9000 implements ModInitializer {
 	public void onInitialize() {
 		LOGGER.info("what is this name T-T /\\");
 
+		ServerLifecycleEvents.SERVER_STARTING.register(server -> {
+			LOGGER.info("Adding polymer resource pack.");
+			PolymerResourcePackUtils.addModAssets(MOD_ID);
+			PolymerResourcePackUtils.markAsRequired();
+		});
+
 		BlockRegistry.<SpawnerLoaderBlock, SpawnerLoaderBlockItem>register(
 			new BlockRegistry.Entry<>(
 				new SpawnerLoaderBlock(),
 				(block) -> new SpawnerLoaderBlockItem(block)
 			)
 		);
-		
-		ServerLifecycleEvents.SERVER_STARTING.register(server -> {
-			LOGGER.info("Adding polymer resource pack.");
-			PolymerResourcePackUtils.addModAssets(MOD_ID);
-			PolymerResourcePackUtils.markAsRequired();
-		});
 	}
 }
