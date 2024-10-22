@@ -47,6 +47,7 @@ public class SpawnerLoader9000 implements ModInitializer {
 		ServerLifecycleEvents.SERVER_STARTING.register(server -> {
 			LOGGER.info("Adding polymer resource pack!");
 			PolymerResourcePackUtils.addModAssets(MOD_ID);
+			PolymerResourcePackUtils.markAsRequired()
 		});
 	}
 }

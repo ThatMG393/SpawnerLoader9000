@@ -26,12 +26,13 @@ public class SpawnerLoaderBlock extends BlockExt implements StatelessPolymerBloc
 
 	@Override
 	public Block getPolymerBlock(BlockState state) {
-		return Registries.BLOCK.get(Identifier.of("minecraft", "stone"));
+		return getPolymerBlock(state, null);
 	}
 
 	@Override
-	public Block getPolymerBlock(BlockState state, ServerPlayerEntity entity) {
-		return getPolymerBlock(state);
+	public Block getPolymerBlock(BlockState state, ServerPlayerEntity player) {
+		SpawnerLoader9000.LOGGER.info("getPolymerBlock(BlockState, ServerPlayerEntity)!!!");
+		return Registries.BLOCK.get(Identifier.of("minecraft", "stone"));
 	}
 
 	/*
