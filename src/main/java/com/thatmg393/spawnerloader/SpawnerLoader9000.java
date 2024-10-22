@@ -8,9 +8,11 @@ import org.slf4j.LoggerFactory;
 import com.thatmg393.spawnerloader.block.impl.SpawnerLoaderBlock;
 import com.thatmg393.spawnerloader.block.impl.blockitem.SpawnerLoaderBlockItem;
 import com.thatmg393.spawnerloader.block.registry.BlockRegistry;
+import com.thatmg393.spawnerloader.polymer.PolymerIntegrationEntrypoint;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.loader.api.FabricLoader;
 
 public class SpawnerLoader9000 implements ModInitializer {
 	public static final String MOD_ID = "spawnerloader9000";
@@ -20,12 +22,16 @@ public class SpawnerLoader9000 implements ModInitializer {
 	public void onInitialize() {
 		LOGGER.info("what is this name T-T /\\");
 
-		ServerLifecycleEvents.SERVER_STARTING.register(server -> {
-			LOGGER.info("Adding polymer resource pack.");
-			PolymerResourcePackUtils.addModAssets(MOD_ID);
-			PolymerResourcePackUtils.markAsRequired();
-		});
-
+		boolean isPolymerInstalled = FabricLoader.getInstance().isModLoaded("polymer-bundled");
+		if (isPolymerInstalled) {
+			PolymerIntegrationEntrypoint.initializePolymer();
+		} else {
+			initializeNormal();
+		}
+	}
+	
+	public void initializeNormal() {
+		LOGGER.info("Initializing with no Vanilla support!");
 		BlockRegistry.<SpawnerLoaderBlock, SpawnerLoaderBlockItem>register(
 			new BlockRegistry.Entry<>(
 				new SpawnerLoaderBlock(),
