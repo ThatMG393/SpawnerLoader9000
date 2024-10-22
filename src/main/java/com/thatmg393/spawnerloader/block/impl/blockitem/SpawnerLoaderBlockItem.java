@@ -20,7 +20,7 @@ public class SpawnerLoaderBlockItem extends BlockItem implements PolymerItem {
 
 	@Override
 	public Item getPolymerItem(ItemStack itemStack, ServerPlayerEntity player) {
-		return Registries.ITEM.get(Identifier.of("minecraft", "stone"));
+		return Registries.ITEM.get(Identifier.of("minecraft", "beacon"));
 	}
 
 	/*

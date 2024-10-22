@@ -30,10 +30,11 @@ public class SpawnerLoader9000 implements ModInitializer {
 				new SpawnerLoaderBlock(
 					AbstractBlock.Settings.copy(Blocks.COBBLESTONE)
 						.allowsSpawning((state, world, pos, type) -> false)
-						.hardness(3.75f)
+						.hardness(8)
 						.resistance(6)
 						.solid()
 						.sounds(BlockSoundGroup.ANVIL)
+						.dropsLike(Blocks.COBBLESTONE)
 				),
 				(block) -> {
 					return new SpawnerLoaderBlockItem(
