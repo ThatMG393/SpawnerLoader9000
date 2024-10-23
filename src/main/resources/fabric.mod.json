@@ -32,5 +32,10 @@
 	},
 	"suggests": {
 		"polymer-bundled": "0.9.17+1.21.1"
+	},
+	"custom": {
+		"mc-publish": {
+			"modrinth": "DF4iNOCP"
+		}
 	}
 }
