@@ -47,7 +47,6 @@ public class MobSpawnerLogicMixin {
         }
     }
 
-
     @Redirect(
         method = "serverTick", 
         at = @At(value = "INVOKE", 
@@ -57,12 +56,6 @@ public class MobSpawnerLogicMixin {
         LocalDifficulty difficulty, SpawnReason spawnReason, 
         @Nullable EntityData entityData, ServerWorld world2, BlockPos pos
     ) {
-        SpawnerLoader9000.LOGGER.info(
-            "Spawning entity -> " + mobEntity.getClass().getName() +
-            " on pos -> " + pos.toShortString() +
-            " which is a " + world.getBlockState(pos).getBlock().getClass().getName()
-        );
-
         if (mobEntity instanceof PassiveEntity passiveEntity) {
             PassiveEntitySpawnerData d = new PassiveEntitySpawnerData(false);
             d.setSpawnerPosition(pos);

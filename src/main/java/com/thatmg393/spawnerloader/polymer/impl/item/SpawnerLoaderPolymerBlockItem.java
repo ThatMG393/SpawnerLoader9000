@@ -8,6 +8,7 @@ import com.thatmg393.spawnerloader.block.impl.blockitem.SpawnerLoaderBlockItem;
 import com.thatmg393.spawnerloader.utils.IdentifierUtils;
 
 import eu.pb4.polymer.core.api.item.PolymerItem;
+import eu.pb4.polymer.resourcepack.api.PolymerModelData;
 import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -18,8 +19,11 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 public class SpawnerLoaderPolymerBlockItem extends SpawnerLoaderBlockItem implements PolymerItem {
+    private final PolymerModelData polymerItemModelData;
+
     public SpawnerLoaderPolymerBlockItem(Block block) {
         super(block);
+        this.polymerItemModelData = PolymerResourcePackUtils.requestModel(getPolymerItem(), IdentifierUtils.getIdentifier("item/spawner_loader_block"));
     }
 
     @Override
@@ -33,7 +37,7 @@ public class SpawnerLoaderPolymerBlockItem extends SpawnerLoaderBlockItem implem
 
     @Override
     public int getPolymerCustomModelData(ItemStack itemStack, @Nullable ServerPlayerEntity player) {
-        return PolymerResourcePackUtils.requestModel(getPolymerItem(), IdentifierUtils.getIdentifier("item/spawner_loader_block")).value();
+        return this.polymerItemModelData.value();
     }
 
     @Override

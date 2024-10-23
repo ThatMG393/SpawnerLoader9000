@@ -8,17 +8,23 @@ import eu.pb4.polymer.blocks.api.PolymerBlockModel;
 import eu.pb4.polymer.blocks.api.PolymerBlockResourceUtils;
 import eu.pb4.polymer.blocks.api.PolymerTexturedBlock;
 import net.minecraft.block.BlockState;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 public class SpawnerLoaderPolymerBlock extends SpawnerLoaderBlock implements PolymerTexturedBlock {
+    private final BlockState polymerBlock;
+    
     public SpawnerLoaderPolymerBlock() {
         super();
+        this.polymerBlock = PolymerBlockResourceUtils.requestBlock(BlockModelType.FULL_BLOCK, PolymerBlockModel.of(IdentifierUtils.getIdentifier("block/spawner_loader_block")));
     }
 
     @Override
     public BlockState getPolymerBlockState(BlockState state) {
-        return PolymerBlockResourceUtils.requestBlock(
-            BlockModelType.FULL_BLOCK,
-            PolymerBlockModel.of(IdentifierUtils.getIdentifier("block/spawner_loader_block"))
-        );
+        return this.polymerBlock;
+    }
+
+    @Override
+    public BlockState getPolymerBlockState(BlockState state, ServerPlayerEntity player) {
+        return this.getPolymerBlockState(state);
     }
 }
