@@ -77,13 +77,7 @@ jobs:
           github-generate-changelog: true
           github-draft: false
           github-prerelease: false
-          changelog-file: CHANGELOG.md
+          # changelog-file: CHANGELOG.md
 
-      - name: Commit CHANGELOG.md
-        if: ${{ matrix.java == '21' && startsWith(steps.build_bin.outputs.binver, 'v') }}
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          branch: master
-          commit_message: 'Release: Update CHANGELOG.md for ${{ steps.build_bin.outputs.binver }} [skip ci]'
-          file_pattern: CHANGELOG.md
+      
  
