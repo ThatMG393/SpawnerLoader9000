@@ -30,6 +30,11 @@ public class SpawnerLoaderBlockGUI extends SimpleGui {
         updateGuiElements();
     }
 
+    @Override
+    public Text getTitle() {
+        return Text.literal("Spawner Loader Settings");
+    }
+
     private void updateGuiElements() {
         GuiElementBuilder loadChunksAroundToggleButton = new GuiElementBuilder()
             .setItem(shouldLoadChunksAroundBlock ? Items.LIME_STAINED_GLASS_PANE : Items.RED_STAINED_GLASS_PANE)
@@ -38,12 +43,14 @@ public class SpawnerLoaderBlockGUI extends SimpleGui {
                 Text.literal("Load chunks in a 3x3 area centered on this block")
                     .formatted(Formatting.ITALIC)
                     .formatted(Formatting.GRAY)
-            ).addLoreLine(
+            ).addLoreLine(Text.literal(""))
+             .addLoreLine(
                 Text.literal(shouldLoadChunksAroundBlock ? "Enabled : YES" : "Enabled : NO")
                     .formatted(shouldLoadChunksAroundBlock ? Formatting.GREEN : Formatting.RED)
             ).addLoreLine(
                 Text.literal("Click to toggle")
                     .formatted(Formatting.GRAY)
+                    .formatted(Formatting.ITALIC)
             ).setCallback((index, type, action, gui) -> {
                 shouldLoadChunksAroundBlock = !shouldLoadChunksAroundBlock;
                 hasChanges = !hasChanges;
@@ -55,9 +62,19 @@ public class SpawnerLoaderBlockGUI extends SimpleGui {
         GuiElementBuilder applyChangesButton = new GuiElementBuilder()
             .setItem(hasChanges ? Items.LIME_STAINED_GLASS_PANE : Items.GRAY_STAINED_GLASS_PANE)
             .setName(
-                Text.literal("Apply")
+                Text.literal("Apply Changes")
                     .formatted(hasChanges ? Formatting.GREEN : Formatting.GRAY)
-            ).setCallback((index, type, action, gui) -> {
+                    .formatted(Formatting.BOLD)
+            ).addLoreLine(
+                Text.literal("Applies setting changes")
+                    .formatted(Formatting.ITALIC)
+                    .formatted(Formatting.GRAY)
+            ).addLoreLine(Text.literal(""))
+             .addLoreLine(
+                Text.literal("Click to apply")
+                    .formatted(Formatting.GRAY)
+                    .formatted(Formatting.ITALIC)
+            ) .setCallback((index, type, action, gui) -> {
                 if (!hasChanges) return;
 
                 player.getWorld().setBlockState(
