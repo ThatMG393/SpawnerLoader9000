@@ -1,5 +1,5 @@
 # SpawnerLoader9000 (SL9K)
-<hr>
+
 A mod which adds a block that still allows a spawner to spawn entities even if the player is still around.
 
 # Development
