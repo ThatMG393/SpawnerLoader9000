@@ -7,17 +7,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.thatmg393.spawnerloader.block.base.BlockExt;
 import com.thatmg393.spawnerloader.block.impl.SpawnerLoaderBlock;
 import com.thatmg393.spawnerloader.entity.data.PassiveEntitySpawnerData;
 import com.thatmg393.spawnerloader.entity.data.SpawnerEntityData;
 
-import net.minecraft.block.BlockState;
 import net.minecraft.block.spawner.MobSpawnerLogic;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LocalDifficulty;
@@ -32,18 +31,10 @@ public class MobSpawnerLogicMixin {
         cancellable = true
     )
     public void isPlayerInRangeInj(World world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        if (!cir.getReturnValue()) { // only check if player is actually not present
-            try {
-                BlockState blockState = world.getBlockState(pos.up());
-
-                if (!blockState.isAir()) { // if the cast fails then 100% its not our block
-                    BlockExt block = (BlockExt) blockState.getBlock();
-                    if (block.getBlockID().equals(SpawnerLoaderBlock.BLOCK_ID)) {
-                        cir.setReturnValue(true);
-                    }
-                }
-            } catch (ClassCastException e) { }
-        }
+        if (!cir.getReturnValue()) // only check if player is actually not present
+            cir.setReturnValue(
+                world.getBlockState(pos.up()).isOf(Registries.BLOCK.get(SpawnerLoaderBlock.BLOCK_ID))
+            );
     }
 
     @Redirect(

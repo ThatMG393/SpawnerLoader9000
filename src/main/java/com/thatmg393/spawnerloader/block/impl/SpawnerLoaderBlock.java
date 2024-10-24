@@ -1,35 +1,43 @@
 package com.thatmg393.spawnerloader.block.impl;
 
+import java.util.ArrayList;
+
 import com.thatmg393.spawnerloader.block.base.BlockExt;
+import com.thatmg393.spawnerloader.gui.SpawnerLoaderBlockGUI;
 import com.thatmg393.spawnerloader.utils.IdentifierUtils;
 
 import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.piston.PistonBehavior;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.state.StateManager.Builder;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkManager;
 
 public class SpawnerLoaderBlock extends BlockExt {
-    public static final Identifier BLOCK_ID = IdentifierUtils.getIdentifier("spawner_loader_block");
+	public static final Identifier BLOCK_ID = IdentifierUtils.getIdentifier("spawner_loader_block");
+	public static final BooleanProperty ENABLE_CHUNK_LOADING = BooleanProperty.of("enable_chunk_loading");
 
 	public static final int CHUNK_LOAD_RANGE = 3; // Only odd numbers!!
 	public static final int CHUNK_DETECT_RANGE = 5; // Only odd numbers as well!!
 
-	private final ChunkPos[] chunkLoadedByThis = new ChunkPos[CHUNK_LOAD_RANGE * CHUNK_LOAD_RANGE]; 
-	
+	private final ArrayList<ChunkPos> chunkLoadedByThis = new ArrayList<>(CHUNK_LOAD_RANGE * CHUNK_LOAD_RANGE); 
 	private boolean isLoadingChunks = false;
-	private boolean didTryToLoadChunks = false;
 
 	public SpawnerLoaderBlock() {
         super(AbstractBlock.Settings.copy(Blocks.BEACON)
@@ -42,54 +50,75 @@ public class SpawnerLoaderBlock extends BlockExt {
 				.sounds(BlockSoundGroup.ANVIL)
 				.luminance((state) -> 0)
 				.pistonBehavior(PistonBehavior.NORMAL));
-    }
 
-    @Override
-    public Identifier getBlockID() {
-        return BLOCK_ID;
+		this.setDefaultState(
+			this.stateManager.getDefaultState()
+				.with(ENABLE_CHUNK_LOADING, false)
+		);
     }
 
 	@Override
-	public void onPlaced(World world, BlockPos center, BlockState state, LivingEntity placer, ItemStack itemStack) {
-		if (!world.getBlockState(center.down()).isOf(Blocks.SPAWNER)) return;
-		if (amIPresentInNearbyChunks(world, center)) return;
-
-		forceNearbyChunksToLoad(world, center);
+	protected void appendProperties(Builder<Block, BlockState> builder) {
+		builder.add(ENABLE_CHUNK_LOADING);
 	}
 
 	@Override
-	public BlockState onBreak(World world, BlockPos center, BlockState state, PlayerEntity player) {
-		unloadLoadedChunks(world);
-		return this.getDefaultState();
+	protected void onStateReplaced(BlockState oldState, World world, BlockPos centerPos, BlockState newState, boolean moved) {
+		if (!oldState.isOf(newState.getBlock())) return;
+
+		if (newState.get(ENABLE_CHUNK_LOADING)) forceNearbyChunksToLoad(world, centerPos);
+		else unloadLoadedChunks(world);
+
+		System.out.println("will load chunk? " + newState.get(ENABLE_CHUNK_LOADING));
+	}
+
+	@Override
+	protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+		if (player instanceof ServerPlayerEntity serverPlayerEntity) {
+			if (world.getBlockState(pos.down()).isOf(Blocks.SPAWNER)) {
+				SpawnerLoaderBlockGUI.openFor(serverPlayerEntity, state, pos);
+				return ActionResult.SUCCESS;
+			} else {
+				serverPlayerEntity.playSound(
+					SoundEvent.of(IdentifierUtils.getIdentifierFromVanilla("block.note_block.bass")), 1, 1
+				);
+				serverPlayerEntity.sendMessage(
+					Text.literal("You need to place this block on top of any mob spawner!")
+						.formatted(Formatting.RED)
+						.formatted(Formatting.BOLD)
+				);
+				return ActionResult.FAIL;
+			}
+		}
+		return super.onUse(state, world, pos, player, hit);
 	}
 
 	public void forceNearbyChunksToLoad(World world, BlockPos centerPos) {
+		if (!world.getBlockState(centerPos.down()).isOf(Blocks.SPAWNER)) return;
+		if (amIPresentInNearbyChunks(world, centerPos)) return;
 		if (isLoadingChunks) return;
 
 		isLoadingChunks = true;
-		centerPos = new BlockPos(new Vec3i(centerPos.getX() - (CHUNK_LOAD_RANGE - 2), 0, centerPos.getZ() - (CHUNK_LOAD_RANGE - 2)));
 
+		BlockPos startPos = centerPos.add(-(CHUNK_LOAD_RANGE - 2), 0, -(CHUNK_LOAD_RANGE - 2));
 		ChunkManager chunkManager = world.getChunkManager();
 		for (int cX = 0; cX < CHUNK_LOAD_RANGE; cX++) {
 			for (int cZ = 0; cZ < CHUNK_LOAD_RANGE; cZ++) {
-				ChunkPos chunkPos = new ChunkPos(centerPos.getX() + cX, centerPos.getZ() + cZ);
-				chunkLoadedByThis[cX + cZ] = chunkPos;
+				ChunkPos chunkPos = new ChunkPos((startPos.getX() + (cX << 4)) >> 4, (startPos.getZ() + (cZ << 4)) >> 4);
+				chunkLoadedByThis.add(chunkPos);
 
 				chunkManager.setChunkForced(chunkPos, true);
 			}
 		}
 
 		isLoadingChunks = false;
-		didTryToLoadChunks = true;
 	}
 
 	public void unloadLoadedChunks(World world) {
-		if (!didTryToLoadChunks) return;
+		if (chunkLoadedByThis.size() == 0) return;
 
 		ChunkManager chunkManager = world.getChunkManager();
-		for (ChunkPos chunkPos : chunkLoadedByThis) chunkManager.setChunkForced(chunkPos, false);
-
-		didTryToLoadChunks = false; /* idk im going insane */
+		chunkLoadedByThis.forEach(e -> chunkManager.setChunkForced(e, false));
 	}
 
 
@@ -117,5 +146,10 @@ public class SpawnerLoaderBlock extends BlockExt {
 			}
 		}
 		return false;
-	}	
+	}
+
+	@Override
+    public Identifier getBlockID() {
+        return BLOCK_ID;
+    }
 }

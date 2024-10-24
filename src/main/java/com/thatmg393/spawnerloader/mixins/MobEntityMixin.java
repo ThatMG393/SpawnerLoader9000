@@ -6,14 +6,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.thatmg393.spawnerloader.block.base.BlockExt;
 import com.thatmg393.spawnerloader.block.impl.SpawnerLoaderBlock;
 import com.thatmg393.spawnerloader.entity.data.base.SpawnerPositionGetter;
 
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
@@ -39,17 +38,9 @@ public class MobEntityMixin {
     private void cannotDespawnInj(CallbackInfoReturnable<Boolean> cir) {
         World world = ((MobEntity) (Object) this).getEntityWorld();
 
-        if (!world.isClient && spawnReason == SpawnReason.SPAWNER && spawnerPos != null) {
-            try {
-                BlockState blockState = world.getBlockState(spawnerPos.up());
-
-                if (!blockState.isAir()) { // if the cast fails then 100% its not our block
-                    BlockExt block = (BlockExt) blockState.getBlock();
-                    if (block.getBlockID().equals(SpawnerLoaderBlock.BLOCK_ID)) {
-                        cir.setReturnValue(true);
-                    }
-                }
-            } catch (ClassCastException e) { }
-        }
+        if (!world.isClient && spawnReason == SpawnReason.SPAWNER && spawnerPos != null) 
+            cir.setReturnValue(
+                world.getBlockState(spawnerPos.up()).isOf(Registries.BLOCK.get(SpawnerLoaderBlock.BLOCK_ID))
+            );
     }
 }

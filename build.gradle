@@ -23,6 +23,8 @@ dependencies {
 	modImplementation "eu.pb4:polymer-core:${project.polymer_version}"
 	modImplementation "eu.pb4:polymer-blocks:${project.polymer_version}"
 	modImplementation "eu.pb4:polymer-resource-pack:${project.polymer_version}"
+
+	modImplementation include('eu.pb4:sgui:1.6.1+1.21.1')
 }
 
 fabricApi {
