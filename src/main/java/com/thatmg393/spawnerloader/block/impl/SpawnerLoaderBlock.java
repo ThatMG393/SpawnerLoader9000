@@ -121,7 +121,12 @@ public class SpawnerLoaderBlock extends BlockExt {
 
 				isLoadingChunks.set(false);
 			}).exceptionally(e -> {
-				System.out.println("failed to load chunks!");
+				SpawnerLoader9000.LOGGER.info("failed to check myself around. disabling chunk loading.");
+
+				world.setBlockState(
+					centerPos,
+					world.getBlockState(centerPos).with(SpawnerLoaderBlock.ENABLE_CHUNK_LOADING, false)
+				);
 
 				return null;
 			});
