@@ -41,16 +41,14 @@ public class SpawnerLoaderBlockGUI extends SimpleGui {
             .setName(Text.literal("Load chunks nearby"))
             .addLoreLine(
                 Text.literal("Load chunks in a 3x3 area centered on this block")
-                    .formatted(Formatting.ITALIC)
-                    .formatted(Formatting.GRAY)
+                    .formatted(Formatting.ITALIC, Formatting.GRAY)
             ).addLoreLine(Text.literal(""))
              .addLoreLine(
                 Text.literal(shouldLoadChunksAroundBlock ? "Enabled : YES" : "Enabled : NO")
                     .formatted(shouldLoadChunksAroundBlock ? Formatting.GREEN : Formatting.RED)
             ).addLoreLine(
                 Text.literal("Click to toggle")
-                    .formatted(Formatting.GRAY)
-                    .formatted(Formatting.ITALIC)
+                    .formatted(Formatting.GRAY, Formatting.ITALIC)
             ).setCallback((index, type, action, gui) -> {
                 shouldLoadChunksAroundBlock = !shouldLoadChunksAroundBlock;
                 hasChanges = !hasChanges;
@@ -63,17 +61,14 @@ public class SpawnerLoaderBlockGUI extends SimpleGui {
             .setItem(hasChanges ? Items.LIME_STAINED_GLASS_PANE : Items.GRAY_STAINED_GLASS_PANE)
             .setName(
                 Text.literal("Apply Changes")
-                    .formatted(hasChanges ? Formatting.GREEN : Formatting.GRAY)
-                    .formatted(Formatting.BOLD)
+                    .formatted(hasChanges ? Formatting.GREEN : Formatting.GRAY, Formatting.BOLD)
             ).addLoreLine(
-                Text.literal("Applies setting changes")
-                    .formatted(Formatting.ITALIC)
-                    .formatted(Formatting.GRAY)
+                Text.literal("Applies block setting changes")
+                    .formatted(Formatting.ITALIC, Formatting.GRAY)
             ).addLoreLine(Text.literal(""))
              .addLoreLine(
                 Text.literal("Click to apply")
-                    .formatted(Formatting.GRAY)
-                    .formatted(Formatting.ITALIC)
+                    .formatted(Formatting.GRAY, Formatting.ITALIC)
             ) .setCallback((index, type, action, gui) -> {
                 if (!hasChanges) return;
 
