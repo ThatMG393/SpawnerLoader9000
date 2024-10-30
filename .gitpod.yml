@@ -7,6 +7,9 @@ tasks:
     before: rm -rf ~/.sdkman && curl -s "https://get.sdkman.io" | bash
     command: sdk install java 21.0.5-graal
 
+  - name: Setup VSCode Debugging
+    command: ./gradlew vscode
+
 ports:
   - port: 6080
     visibility: private
