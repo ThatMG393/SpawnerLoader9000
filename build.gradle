@@ -61,9 +61,9 @@ task cleanGeneratedData(type: Delete) {
 task copyGeneratedData(type: Copy) {
     from file("src/main/generated")
     into file("src/main/resources")
-	exclude '.*'
+	exclude '.cache'
 	duplicatesStrategy 'inherit'
 }
 
-processResources.dependsOn cleanGeneratedData
+runDatagen.dependsOn cleanGeneratedData
 runDatagen.finalizedBy copyGeneratedData
