@@ -20,7 +20,6 @@ public class BlockRegistry {
     public static final Entry<? extends SpawnerLoaderBlock, ? extends SpawnerLoaderBlockItem> SPAWNER_LOADER;
 
     static {
-        System.out.println("BlockRegistry init!");
         if (SpawnerLoader9000.POLYMER_PRESENT) {
             SPAWNER_LOADER = BlockRegistry.<SpawnerLoaderPolymerBlock, SpawnerLoaderPolymerBlockItem>register(
                 new BlockRegistry.Entry<>(
@@ -38,7 +37,10 @@ public class BlockRegistry {
         }
     }
 
-    public static void callForInit() { }
+    public static void callForInit() {
+        SpawnerLoader9000.LOGGER.info("BlockRegistry init with " +
+             ((SpawnerLoader9000.POLYMER_PRESENT) ? "vanilla client support!" : "nothing, nothing special."));
+    }
 
     public static record Entry<B extends BlockExt, I extends BlockItem>(
         @NotNull B block,
