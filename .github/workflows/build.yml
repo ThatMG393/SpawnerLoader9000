@@ -38,9 +38,6 @@ jobs:
       - name: Make gradle wrapper executable
         run: chmod +x ./gradlew
 
-      - name: Fabric generate data
-        run: ./gradlew runDatagen
-
       - name: Build mod
         id: build_bin
         run: bash build.sh ${{ github.ref }}
