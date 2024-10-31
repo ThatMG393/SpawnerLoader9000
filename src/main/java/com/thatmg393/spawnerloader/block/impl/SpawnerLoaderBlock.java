@@ -6,7 +6,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.thatmg393.spawnerloader.SpawnerLoader9000;
 import com.thatmg393.spawnerloader.block.base.BlockExt;
-import com.thatmg393.spawnerloader.block.impl.blockitem.SpawnerLoaderBlockItem;
 import com.thatmg393.spawnerloader.gui.SpawnerLoaderBlockGUI;
 import com.thatmg393.spawnerloader.utils.BlockSearcher;
 import com.thatmg393.spawnerloader.utils.IdentifierUtils;
@@ -17,14 +16,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.PickaxeItem;
-import net.minecraft.item.ToolMaterial;
-import net.minecraft.item.ToolMaterials;
-import net.minecraft.loot.context.LootContextParameterSet;
-import net.minecraft.loot.context.LootContextParameters;
-import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundEvent;
@@ -33,9 +24,7 @@ import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -78,6 +67,8 @@ public class SpawnerLoaderBlock extends BlockExt {
 
 	@Override
 	protected void onStateReplaced(BlockState oldState, World world, BlockPos centerPos, BlockState newState, boolean moved) {
+		super.onStateReplaced(oldState, world, centerPos, newState, moved);
+		
 		SpawnerLoader9000.LOGGER.info("onStateReplaced! moved -> " + moved);
 		if (!moved && !oldState.isOf(newState.getBlock())) {
 			unloadLoadedChunks(world);
@@ -86,8 +77,6 @@ public class SpawnerLoaderBlock extends BlockExt {
 
 		if (newState.get(ENABLE_CHUNK_LOADING)) forceNearbyChunksToLoad(world, centerPos);
 		else unloadLoadedChunks(world);
-
-		super.onStateReplaced(oldState, world, centerPos, newState, moved);
 	}
 
 	@Override
