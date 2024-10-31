@@ -78,7 +78,7 @@ public class SpawnerLoaderBlock extends BlockExt {
 
 	@Override
 	protected void onStateReplaced(BlockState oldState, World world, BlockPos centerPos, BlockState newState, boolean moved) {
-		SpawnerLoader9000.LOGGER.info("onStateReplaced! moved->" + moved);
+		SpawnerLoader9000.LOGGER.info("onStateReplaced! moved -> " + moved);
 		if (!moved && !oldState.isOf(newState.getBlock())) {
 			unloadLoadedChunks(world);
 			return;
@@ -88,21 +88,6 @@ public class SpawnerLoaderBlock extends BlockExt {
 		else unloadLoadedChunks(world);
 
 		super.onStateReplaced(oldState, world, centerPos, newState, moved);
-	}
-
-	@Override
-	protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (player instanceof ServerPlayerEntity serverPlayerEntity) {
-			if (!world.getBlockState(pos.down()).isOf(Blocks.SPAWNER)) {
-				serverPlayerEntity.sendMessage(
-					Text.literal("You need to place this block on top if any mob spawner!")
-					    .formatted(Formatting.BOLD, Formatting.RED)
-				);
-				return ItemActionResult.FAIL;
-			}
-			return ItemActionResult.SUCCESS;
-		}
-		return ItemActionResult.FAIL;
 	}
 
 	@Override
