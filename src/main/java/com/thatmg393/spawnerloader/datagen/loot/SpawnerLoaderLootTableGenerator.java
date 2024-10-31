@@ -16,14 +16,5 @@ public class SpawnerLoaderLootTableGenerator extends FabricBlockLootTableProvide
     @Override
     public void generate() {
         addDrop(BlockRegistry.SPAWNER_LOADER.block());
-            /* LootTable.builder().pool(
-                LootPool.builder()
-                    .rolls(ConstantLootNumberProvider.create(1.0f))
-                    .with(
-                        ItemEntry.builder(BlockRegistry.SPAWNER_LOADER.block())
-                            .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1.0f)))
-                    )   
-            )
-        );*/
     }
 }
