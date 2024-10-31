@@ -52,8 +52,13 @@ jar {
 	from("LICENSE") {
 		rename { "${it}_${project.base.archivesName.get()}"}
 	}
+
+	processResources.exclude('.cache/**')
 }
 
+sourceSets.main.resources.srcDirs += "src/main/generated"
+
+/*
 task cleanGeneratedData(type: Delete) {
     delete fileTree("src/main/resources/data")
 }
@@ -62,8 +67,10 @@ task copyGeneratedData(type: Copy) {
     from file("src/main/generated")
     into file("src/main/resources")
 	exclude '.cache'
-	duplicatesStrategy 'inherit'
+	duplicatesStrategy(DuplicatesStrategy.INHERIT)
 }
 
+processResources.dependsOn cleanGeneratedData
 runDatagen.dependsOn cleanGeneratedData
 runDatagen.finalizedBy copyGeneratedData
+*/
