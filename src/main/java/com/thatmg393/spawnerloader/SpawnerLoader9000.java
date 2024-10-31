@@ -12,7 +12,7 @@ import net.fabricmc.loader.api.FabricLoader;
 public class SpawnerLoader9000 implements ModInitializer {
 	public static final String MOD_ID = "spawnerloader9000";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-	public static final boolean POLYMER_PRESENT = FabricLoader.getInstance().isModLoaded("polymer-bundled");
+	public static final boolean POLYMER_PRESENT = FabricLoader.getInstance().isModLoaded("polymer-bundled");/* || FabricLoader.getInstance().isDevelopmentEnvironment(); */
 
 	@Override
 	public void onInitialize() {

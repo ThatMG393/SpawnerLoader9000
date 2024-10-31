@@ -6,19 +6,16 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.thatmg393.spawnerloader.SpawnerLoader9000;
 import com.thatmg393.spawnerloader.block.base.BlockExt;
-import com.thatmg393.spawnerloader.block.impl.blockitem.SpawnerLoaderBlockItem;
 import com.thatmg393.spawnerloader.gui.SpawnerLoaderBlockGUI;
 import com.thatmg393.spawnerloader.utils.BlockSearcher;
 import com.thatmg393.spawnerloader.utils.IdentifierUtils;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundEvent;
@@ -47,11 +44,11 @@ public class SpawnerLoaderBlock extends BlockExt {
 	private CompletableFuture<Boolean> blockSearchFuture = null;
 
 	public SpawnerLoaderBlock() {
-        super(AbstractBlock.Settings.copy(Blocks.BEACON)
+        super(Settings.copy(Blocks.BEACON)
 				.mapColor(MapColor.BRIGHT_RED)
 		        .allowsSpawning((state, world, centerPos, type) -> false)
 				.solid()
-				.strength(8f)
+				.strength(5f)
 				.requiresTool()
 				.sounds(BlockSoundGroup.ANVIL)
 				.luminance((state) -> 0)
@@ -100,11 +97,6 @@ public class SpawnerLoaderBlock extends BlockExt {
 			}
 		}
 		return super.onUse(state, world, pos, player, hit);
-	}
-
-	@Override
-	public Item asItem() {
-		return new SpawnerLoaderBlockItem(this);
 	}
 
 	public void forceNearbyChunksToLoad(World world, BlockPos centerPos) {
