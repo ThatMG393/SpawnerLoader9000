@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.thatmg393.spawnerloader.SpawnerLoader9000;
 import com.thatmg393.spawnerloader.block.base.BlockExt;
+import com.thatmg393.spawnerloader.block.impl.blockitem.SpawnerLoaderBlockItem;
 import com.thatmg393.spawnerloader.gui.SpawnerLoaderBlockGUI;
 import com.thatmg393.spawnerloader.utils.BlockSearcher;
 import com.thatmg393.spawnerloader.utils.IdentifierUtils;
@@ -16,6 +17,14 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.PickaxeItem;
+import net.minecraft.item.ToolMaterial;
+import net.minecraft.item.ToolMaterials;
+import net.minecraft.loot.context.LootContextParameterSet;
+import net.minecraft.loot.context.LootContextParameters;
+import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundEvent;
@@ -24,7 +33,9 @@ import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -80,6 +91,21 @@ public class SpawnerLoaderBlock extends BlockExt {
 	}
 
 	@Override
+	protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		if (player instanceof ServerPlayerEntity serverPlayerEntity) {
+			if (!world.getBlockState(pos.down()).isOf(Blocks.SPAWNER)) {
+				serverPlayerEntity.sendMessage(
+					Text.literal("You need to place this block on top if any mob spawner!")
+					    .formatted(Formatting.BOLD, Formatting.RED)
+				);
+				return ItemActionResult.FAIL;
+			}
+			return ItemActionResult.SUCCESS;
+		}
+		return ItemActionResult.FAIL;
+	}
+
+	@Override
 	protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
 		if (player instanceof ServerPlayerEntity serverPlayerEntity) {
 			if (world.getBlockState(pos.down()).isOf(Blocks.SPAWNER)) {
@@ -97,6 +123,28 @@ public class SpawnerLoaderBlock extends BlockExt {
 			}
 		}
 		return super.onUse(state, world, pos, player, hit);
+	}
+
+	@Override
+	protected List<ItemStack> getDroppedStacks(BlockState state, LootContextParameterSet.Builder builder) {
+		ItemStack tool = builder.build(LootContextTypes.BLOCK).get(LootContextParameters.TOOL);
+
+		if (tool == null || !(tool.getItem() instanceof PickaxeItem)) return List.of();
+		if (tool.getItem() instanceof PickaxeItem pickaxe) {
+			ToolMaterial material = pickaxe.getMaterial();
+
+			if (material == ToolMaterials.WOOD
+			 || material == ToolMaterials.STONE
+			 || material == ToolMaterials.IRON
+			 || material == ToolMaterials.GOLD) return List.of();
+		}
+		
+		return List.of(new ItemStack(this));
+	}
+
+	@Override
+	public Item asItem() {
+		return new SpawnerLoaderBlockItem(this);
 	}
 
 	public void forceNearbyChunksToLoad(World world, BlockPos centerPos) {
