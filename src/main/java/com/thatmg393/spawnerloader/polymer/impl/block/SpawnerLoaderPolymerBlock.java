@@ -29,9 +29,4 @@ public class SpawnerLoaderPolymerBlock extends SpawnerLoaderBlock implements Pol
     public BlockState getPolymerBlockState(BlockState state, ServerPlayerEntity player) {
         return this.getPolymerBlockState(state);
     }
-
-    @Override
-    public Item asItem() {
-        return new SpawnerLoaderPolymerBlockItem(this);
-    }
 }
