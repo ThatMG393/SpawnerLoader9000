@@ -125,28 +125,6 @@ public class SpawnerLoaderBlock extends BlockExt {
 		return super.onUse(state, world, pos, player, hit);
 	}
 
-	@Override
-	protected List<ItemStack> getDroppedStacks(BlockState state, LootContextParameterSet.Builder builder) {
-		ItemStack tool = builder.build(LootContextTypes.BLOCK).get(LootContextParameters.TOOL);
-
-		if (tool == null || !(tool.getItem() instanceof PickaxeItem)) return List.of();
-		if (tool.getItem() instanceof PickaxeItem pickaxe) {
-			ToolMaterial material = pickaxe.getMaterial();
-
-			if (material == ToolMaterials.WOOD
-			 || material == ToolMaterials.STONE
-			 || material == ToolMaterials.IRON
-			 || material == ToolMaterials.GOLD) return List.of();
-		}
-		
-		return List.of(new ItemStack(this));
-	}
-
-	@Override
-	public Item asItem() {
-		return new SpawnerLoaderBlockItem(this);
-	}
-
 	public void forceNearbyChunksToLoad(World world, BlockPos centerPos) {
 		if (!world.getBlockState(centerPos.down()).isOf(Blocks.SPAWNER)) return;
 		blockSearchFuture = BlockSearcher.isBlockPresent(world, centerPos, this, CHUNK_DETECT_RANGE);
