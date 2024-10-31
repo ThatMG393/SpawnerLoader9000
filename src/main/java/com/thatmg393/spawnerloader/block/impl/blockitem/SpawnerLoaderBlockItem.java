@@ -1,23 +1,30 @@
 package com.thatmg393.spawnerloader.block.impl.blockitem;
 
-import com.thatmg393.spawnerloader.block.base.BlockExt;
+import java.util.List;
 
-import net.minecraft.block.Block;
+import com.thatmg393.spawnerloader.block.impl.SpawnerLoaderBlock;
+
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Rarity;
 
 public class SpawnerLoaderBlockItem extends BlockItem {
-	private final BlockExt correlatingBlock;
-
-	public SpawnerLoaderBlockItem(Block block) {
-        super(block,
+	public SpawnerLoaderBlockItem(SpawnerLoaderBlock block) {
+        super(
+			block,
 			new Settings()
-				.maxCount(16)
-				.rarity(Rarity.UNCOMMON));
-		this.correlatingBlock = (BlockExt) block;
+			    .maxCount(16)
+				.rarity(Rarity.UNCOMMON)
+		);
     }
 
-	public BlockExt getCorrelatingBlock() {
-		return correlatingBlock;
+	@Override
+	public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+		tooltip.add(Text.literal("Place this on top of a spawner and see the magic happen!").formatted(Formatting.ITALIC));
+        tooltip.add(Text.literal(""));
+        tooltip.add(Text.literal("The spawner loader.").formatted(Formatting.BOLD));
 	}
 }
