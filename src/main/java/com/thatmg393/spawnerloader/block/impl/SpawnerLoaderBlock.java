@@ -1,7 +1,7 @@
 package com.thatmg393.spawnerloader.block.impl;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.thatmg393.spawnerloader.SpawnerLoader9000;
@@ -11,7 +11,6 @@ import com.thatmg393.spawnerloader.gui.SpawnerLoaderBlockGUI;
 import com.thatmg393.spawnerloader.utils.BlockSearcher;
 import com.thatmg393.spawnerloader.utils.IdentifierUtils;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -53,13 +52,14 @@ public class SpawnerLoaderBlock extends BlockExt {
 	private final ArrayList<ChunkPos> chunkLoadedByThis = new ArrayList<>(CHUNK_LOAD_RANGE * CHUNK_LOAD_RANGE); 
 	private final AtomicBoolean isLoadingChunks = new AtomicBoolean();
 
+	private CompletableFuture<Boolean> blockSearchFuture = null;
+
 	public SpawnerLoaderBlock() {
-        super(AbstractBlock.Settings.copy(Blocks.BEACON)
+        super(Settings.copy(Blocks.BEACON)
 				.mapColor(MapColor.BRIGHT_RED)
 		        .allowsSpawning((state, world, centerPos, type) -> false)
 				.solid()
-				.resistance(8)
-				.hardness(8)
+				.strength(5f)
 				.requiresTool()
 				.sounds(BlockSoundGroup.ANVIL)
 				.luminance((state) -> 0)
@@ -86,6 +86,8 @@ public class SpawnerLoaderBlock extends BlockExt {
 
 		if (newState.get(ENABLE_CHUNK_LOADING)) forceNearbyChunksToLoad(world, centerPos);
 		else unloadLoadedChunks(world);
+
+		super.onStateReplaced(oldState, world, centerPos, newState, moved);
 	}
 
 	@Override
@@ -114,7 +116,7 @@ public class SpawnerLoaderBlock extends BlockExt {
 					SoundEvent.of(IdentifierUtils.getIdentifierFromVanilla("block.note_block.bass")), 1, 1
 				);
 				serverPlayerEntity.sendMessage(
-					Text.literal("You need to place this block on top of any mob spawner!")
+					Text.literal("You need to place this block on top of any mob spawner to use the GUI!")
 						.formatted(Formatting.RED, Formatting.BOLD)
 				);
 				return ActionResult.FAIL;
@@ -147,41 +149,43 @@ public class SpawnerLoaderBlock extends BlockExt {
 
 	public void forceNearbyChunksToLoad(World world, BlockPos centerPos) {
 		if (!world.getBlockState(centerPos.down()).isOf(Blocks.SPAWNER)) return;
-		BlockSearcher.isBlockPresent(world, centerPos, this, CHUNK_DETECT_RANGE)
-			.thenAccept((b) -> {
-				if (isLoadingChunks.get()) return;
+		blockSearchFuture = BlockSearcher.isBlockPresent(world, centerPos, this, CHUNK_DETECT_RANGE);
+		blockSearchFuture.thenAccept((b) -> {
+			if (isLoadingChunks.get()) return;
+			blockSearchFuture = null;
 
-				SpawnerLoader9000.LOGGER.info("will now load chunks around.");
-				isLoadingChunks.set(true);
+			SpawnerLoader9000.LOGGER.info("Will now load chunks around.");
+			isLoadingChunks.set(true);
 
-				unloadLoadedChunks(world);
+			unloadLoadedChunks(world);
 
-				BlockPos startPos = centerPos.add(-(CHUNK_LOAD_RANGE - 2), 0, -(CHUNK_LOAD_RANGE - 2));
-				ChunkManager chunkManager = world.getChunkManager();
-				for (int cX = 0; cX < CHUNK_LOAD_RANGE; cX++) {
-					for (int cZ = 0; cZ < CHUNK_LOAD_RANGE; cZ++) {
-						ChunkPos chunkPos = new ChunkPos((startPos.getX() + (cX << 4)) >> 4, (startPos.getZ() + (cZ << 4)) >> 4);
-						chunkLoadedByThis.add(chunkPos);
+			BlockPos startPos = centerPos.add(-(CHUNK_LOAD_RANGE - 2), 0, -(CHUNK_LOAD_RANGE - 2));
+			ChunkManager chunkManager = world.getChunkManager();
+			for (int cX = 0; cX < CHUNK_LOAD_RANGE; cX++) {
+				for (int cZ = 0; cZ < CHUNK_LOAD_RANGE; cZ++) {
+					ChunkPos chunkPos = new ChunkPos((startPos.getX() + (cX << 4)) >> 4, (startPos.getZ() + (cZ << 4)) >> 4);
+					chunkLoadedByThis.add(chunkPos);
 
-						chunkManager.setChunkForced(chunkPos, true);
-					}
+					chunkManager.setChunkForced(chunkPos, true);
 				}
+			}
 
-				isLoadingChunks.set(false);
-			}).exceptionally(e -> {
-				SpawnerLoader9000.LOGGER.info("failed to check myself around. disabling chunk loading.");
+			isLoadingChunks.set(false);
+		}).exceptionally(e -> {
+			SpawnerLoader9000.LOGGER.info("Failed to check myself around. disabling chunk loading.");
 
-				world.setBlockState(
-					centerPos,
-					world.getBlockState(centerPos).with(SpawnerLoaderBlock.ENABLE_CHUNK_LOADING, false)
-				);
+			world.setBlockState(
+				centerPos,
+				world.getBlockState(centerPos).with(SpawnerLoaderBlock.ENABLE_CHUNK_LOADING, false)
+			);
 
-				return null;
-			});
+			return null;
+		});
 	}
 
 	public void unloadLoadedChunks(World world) {
-		if (chunkLoadedByThis.size() == 0) return;
+		if (chunkLoadedByThis.size() == 0 || isLoadingChunks.get()) return;
+		if (blockSearchFuture != null) blockSearchFuture.cancel(false);
 
 		ChunkManager chunkManager = world.getChunkManager();
 		chunkLoadedByThis.forEach(e -> chunkManager.setChunkForced(e, false));
