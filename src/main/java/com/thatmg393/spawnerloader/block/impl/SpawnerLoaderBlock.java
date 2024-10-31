@@ -111,36 +111,36 @@ public class SpawnerLoaderBlock extends BlockExt {
 		if (!world.getBlockState(centerPos.down()).isOf(Blocks.SPAWNER)) return;
 		blockSearchFuture = BlockSearcher.isBlockPresent(world, centerPos, this, CHUNK_DETECT_RANGE);
 		blockSearchFuture.thenAccept((b) -> {
-				if (isLoadingChunks.get()) return;
-				blockSearchFuture = null;
+			if (isLoadingChunks.get()) return;
+			blockSearchFuture = null;
 
-				SpawnerLoader9000.LOGGER.info("will now load chunks around.");
-				isLoadingChunks.set(true);
+			SpawnerLoader9000.LOGGER.info("Will now load chunks around.");
+			isLoadingChunks.set(true);
 
-				unloadLoadedChunks(world);
+			unloadLoadedChunks(world);
 
-				BlockPos startPos = centerPos.add(-(CHUNK_LOAD_RANGE - 2), 0, -(CHUNK_LOAD_RANGE - 2));
-				ChunkManager chunkManager = world.getChunkManager();
-				for (int cX = 0; cX < CHUNK_LOAD_RANGE; cX++) {
-					for (int cZ = 0; cZ < CHUNK_LOAD_RANGE; cZ++) {
-						ChunkPos chunkPos = new ChunkPos((startPos.getX() + (cX << 4)) >> 4, (startPos.getZ() + (cZ << 4)) >> 4);
-						chunkLoadedByThis.add(chunkPos);
+			BlockPos startPos = centerPos.add(-(CHUNK_LOAD_RANGE - 2), 0, -(CHUNK_LOAD_RANGE - 2));
+			ChunkManager chunkManager = world.getChunkManager();
+			for (int cX = 0; cX < CHUNK_LOAD_RANGE; cX++) {
+				for (int cZ = 0; cZ < CHUNK_LOAD_RANGE; cZ++) {
+					ChunkPos chunkPos = new ChunkPos((startPos.getX() + (cX << 4)) >> 4, (startPos.getZ() + (cZ << 4)) >> 4);
+					chunkLoadedByThis.add(chunkPos);
 
-						chunkManager.setChunkForced(chunkPos, true);
-					}
+					chunkManager.setChunkForced(chunkPos, true);
 				}
+			}
 
-				isLoadingChunks.set(false);
-			}).exceptionally(e -> {
-				SpawnerLoader9000.LOGGER.info("failed to check myself around. disabling chunk loading.");
+			isLoadingChunks.set(false);
+		}).exceptionally(e -> {
+			SpawnerLoader9000.LOGGER.info("Failed to check myself around. disabling chunk loading.");
 
-				world.setBlockState(
-					centerPos,
-					world.getBlockState(centerPos).with(SpawnerLoaderBlock.ENABLE_CHUNK_LOADING, false)
-				);
+			world.setBlockState(
+				centerPos,
+				world.getBlockState(centerPos).with(SpawnerLoaderBlock.ENABLE_CHUNK_LOADING, false)
+			);
 
-				return null;
-			});
+			return null;
+		});
 	}
 
 	public void unloadLoadedChunks(World world) {
