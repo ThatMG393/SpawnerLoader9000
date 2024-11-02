@@ -34,6 +34,7 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
           distribution: 'temurin'
+          cache: gradle
 
       - name: Make gradle wrapper executable
         run: chmod +x ./gradlew
