@@ -22,7 +22,7 @@ public class SpawnerLoaderPolymerBlockItem extends SpawnerLoaderBlockItem implem
     private final PolymerModelData polymerItemModelData;
 
     public SpawnerLoaderPolymerBlockItem(SpawnerLoaderBlock block) {
-        super((SpawnerLoaderPolymerBlock) block);
+        super(block);
         this.polymerItemModelData = PolymerResourcePackUtils.requestModel(getPolymerItem(), IdentifierUtils.getIdentifier("item/spawner_loader_block"));
     }
 
@@ -38,10 +38,5 @@ public class SpawnerLoaderPolymerBlockItem extends SpawnerLoaderBlockItem implem
     @Override
     public int getPolymerCustomModelData(ItemStack itemStack, @Nullable ServerPlayerEntity player) {
         return this.polymerItemModelData.value();
-    }
-
-    @Override
-    public void modifyClientTooltip(List<Text> tooltip, ItemStack stack, @Nullable ServerPlayerEntity player) {
-        this.appendTooltip(stack, null, tooltip, null);
     }
 }
