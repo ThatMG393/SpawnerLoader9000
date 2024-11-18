@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.2+release.2] - 2024-11-18
+### Bug Fixes
+- [`9f016de`](https://github.com/ThatMG393/SpawnerLoader9000/commit/9f016de7bb808bc430a1c7b7cf6e86fcdb385e4d) - avoid setting tooltip twice in polymer implementation *(commit by [@ThatMG393](https://github.com/ThatMG393))*
+
+
 ## [v0.0.2+release.1] - 2024-10-26
 ### New Features
 - [`139ea65`](https://github.com/ThatMG393/SpawnerLoader9000/commit/139ea65829676bcb60f9b57ff4916dafa625c44c) - implement missing block functionalities *(commit by [@AltIsBacc](https://github.com/AltIsBacc))*
@@ -22,3 +27,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [`136d1ac`](https://github.com/ThatMG393/SpawnerLoader9000/commit/136d1ac18952ec45779ebcad151054b913e46060) - Prime for future releases (again) *(commit by [@ThatMG393](https://github.com/ThatMG393))*
 
 [v0.0.2+release.1]: https://github.com/ThatMG393/SpawnerLoader9000/compare/v0.0.1+release.1...v0.0.2+release.1
+[v0.0.2+release.2]: https://github.com/ThatMG393/SpawnerLoader9000/compare/v0.0.2+release.1...v0.0.2+release.2
