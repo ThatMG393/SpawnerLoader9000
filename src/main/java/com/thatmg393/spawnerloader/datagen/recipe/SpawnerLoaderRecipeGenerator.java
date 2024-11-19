@@ -2,7 +2,7 @@ package com.thatmg393.spawnerloader.datagen.recipe;
 
 import java.util.concurrent.CompletableFuture;
 
-import com.thatmg393.spawnerloader.block.impl.SpawnerLoaderBlock;
+import com.thatmg393.spawnerloader.block.impl.block.SpawnerLoaderBlock;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;

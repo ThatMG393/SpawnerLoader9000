@@ -3,6 +3,7 @@ package com.thatmg393.spawnerloader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.thatmg393.spawnerloader.block.registry.BlockEntityRegistry;
 import com.thatmg393.spawnerloader.block.registry.BlockRegistry;
 
 import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
@@ -18,6 +19,7 @@ public class SpawnerLoader9000 implements ModInitializer {
 	public void onInitialize() {
 		LOGGER.info("what is this name T-T /\\");
 		BlockRegistry.callForInit();
+		BlockEntityRegistry.callForInit();
 
 		if (POLYMER_PRESENT) {
 			SpawnerLoader9000.LOGGER.info("Initializing with Vanilla support!");

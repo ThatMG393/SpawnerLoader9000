@@ -9,6 +9,14 @@ public class IdentifierUtils {
         return Identifier.of(SpawnerLoader9000.MOD_ID, id);
     }
 
+    public static Identifier getItemIdentifier(String id) {
+        return getIdentifier("item/" + id);
+    }
+
+    public static Identifier getBlockIdentifier(String id) {
+        return getIdentifier("block/" + id);
+    }
+
     public static Identifier getIdentifierFromVanilla(String id) {
         return Identifier.of("minecraft", id);
     }

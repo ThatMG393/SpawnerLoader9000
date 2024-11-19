@@ -1,12 +1,9 @@
 package com.thatmg393.spawnerloader.polymer.impl.item;
 
-import java.util.List;
-
 import org.jetbrains.annotations.Nullable;
 
-import com.thatmg393.spawnerloader.block.impl.SpawnerLoaderBlock;
-import com.thatmg393.spawnerloader.block.impl.blockitem.SpawnerLoaderBlockItem;
-import com.thatmg393.spawnerloader.polymer.impl.block.SpawnerLoaderPolymerBlock;
+import com.thatmg393.spawnerloader.block.impl.block.SpawnerLoaderBlock;
+import com.thatmg393.spawnerloader.block.impl.block.item.SpawnerLoaderBlockItem;
 import com.thatmg393.spawnerloader.utils.IdentifierUtils;
 
 import eu.pb4.polymer.core.api.item.PolymerItem;
@@ -16,14 +13,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 
 public class SpawnerLoaderPolymerBlockItem extends SpawnerLoaderBlockItem implements PolymerItem {
-    private final PolymerModelData polymerItemModelData;
+    private final PolymerModelData polymerItemModelData = PolymerResourcePackUtils.requestModel(getPolymerItem(), IdentifierUtils.getItemIdentifier("spawner_loader_block"));
 
     public SpawnerLoaderPolymerBlockItem(SpawnerLoaderBlock block) {
         super(block);
-        this.polymerItemModelData = PolymerResourcePackUtils.requestModel(getPolymerItem(), IdentifierUtils.getIdentifier("item/spawner_loader_block"));
     }
 
     @Override

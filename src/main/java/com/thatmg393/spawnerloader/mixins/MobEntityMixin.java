@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.thatmg393.spawnerloader.block.impl.SpawnerLoaderBlock;
+import com.thatmg393.spawnerloader.block.impl.block.SpawnerLoaderBlock;
 import com.thatmg393.spawnerloader.entity.data.base.SpawnerPositionGetter;
 
 import net.minecraft.entity.EntityData;

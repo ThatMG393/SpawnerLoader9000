@@ -17,7 +17,7 @@ public class SpawnerLoaderTagGenerator extends FabricTagProvider.BlockTagProvide
     @Override
     protected void configure(WrapperLookup wrapperLookup) {
         getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE)
-                  .add(BlockRegistry.SPAWNER_LOADER.block())
+                  .add(BlockRegistry.SPAWNER_LOADER_BLOCK.block())
                   .setReplace(false);
     }
 }

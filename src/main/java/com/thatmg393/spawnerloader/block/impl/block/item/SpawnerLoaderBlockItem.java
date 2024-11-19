@@ -1,8 +1,8 @@
-package com.thatmg393.spawnerloader.block.impl.blockitem;
+package com.thatmg393.spawnerloader.block.impl.block.item;
 
 import java.util.List;
 
-import com.thatmg393.spawnerloader.block.impl.SpawnerLoaderBlock;
+import com.thatmg393.spawnerloader.block.impl.block.SpawnerLoaderBlock;
 
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;

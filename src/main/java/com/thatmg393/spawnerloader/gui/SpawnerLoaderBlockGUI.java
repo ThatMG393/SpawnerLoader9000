@@ -1,6 +1,6 @@
 package com.thatmg393.spawnerloader.gui;
 
-import com.thatmg393.spawnerloader.block.impl.SpawnerLoaderBlock;
+import com.thatmg393.spawnerloader.block.impl.block.SpawnerLoaderBlock;
 
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
@@ -24,7 +24,6 @@ public class SpawnerLoaderBlockGUI extends SimpleGui {
         super(ScreenHandlerType.GENERIC_9X3, player, false);
         this.blockState = blockState;
         this.blockPos = blockPos;
-        
         this.shouldLoadChunksAroundBlock = blockState.get(SpawnerLoaderBlock.ENABLE_CHUNK_LOADING);
 
         updateGuiElements();

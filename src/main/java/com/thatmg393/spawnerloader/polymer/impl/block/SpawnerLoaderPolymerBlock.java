@@ -1,6 +1,6 @@
 package com.thatmg393.spawnerloader.polymer.impl.block;
 
-import com.thatmg393.spawnerloader.block.impl.SpawnerLoaderBlock;
+import com.thatmg393.spawnerloader.block.impl.block.SpawnerLoaderBlock;
 import com.thatmg393.spawnerloader.utils.IdentifierUtils;
 
 import eu.pb4.polymer.blocks.api.BlockModelType;
@@ -11,11 +11,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public class SpawnerLoaderPolymerBlock extends SpawnerLoaderBlock implements PolymerTexturedBlock {
-    private final BlockState polymerBlock;
+    private final BlockState polymerBlock = PolymerBlockResourceUtils.requestBlock(BlockModelType.FULL_BLOCK, PolymerBlockModel.of(IdentifierUtils.getBlockIdentifier("spawner_loader_block")));
     
     public SpawnerLoaderPolymerBlock() {
         super();
-        this.polymerBlock = PolymerBlockResourceUtils.requestBlock(BlockModelType.FULL_BLOCK, PolymerBlockModel.of(IdentifierUtils.getIdentifier("block/spawner_loader_block")));
     }
 
     @Override
