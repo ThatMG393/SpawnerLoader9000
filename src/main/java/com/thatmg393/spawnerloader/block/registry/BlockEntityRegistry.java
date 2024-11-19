@@ -8,6 +8,7 @@ import com.thatmg393.spawnerloader.SpawnerLoader9000;
 import com.thatmg393.spawnerloader.block.impl.block.SpawnerLoaderBlock;
 import com.thatmg393.spawnerloader.block.impl.block.entity.SpawnerLoaderBlockEntity;
 
+import eu.pb4.polymer.core.api.block.PolymerBlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -21,17 +22,13 @@ public class BlockEntityRegistry {
     public static final Entry<BlockEntityFactory<? extends SpawnerLoaderBlockEntity>, ? extends SpawnerLoaderBlock> SPAWNER_LOADER_BLOCK_ENTITY;
 
     static {
-        if (SpawnerLoader9000.POLYMER_PRESENT) {
-            SPAWNER_LOADER_BLOCK_ENTITY = null;
-        } else {
-            SPAWNER_LOADER_BLOCK_ENTITY = BlockEntityRegistry.register(
-                new Entry<>(
-                    SpawnerLoaderBlockEntity.BLOCK_ENTITY_ID,
-                    SpawnerLoaderBlockEntity::new,
-                    BlockRegistry.SPAWNER_LOADER_BLOCK.block()
-                )
-            );
-        }
+        SPAWNER_LOADER_BLOCK_ENTITY = register(
+            new Entry<>(
+                SpawnerLoaderBlockEntity.BLOCK_ENTITY_ID,
+                SpawnerLoaderBlockEntity::new,
+                BlockRegistry.SPAWNER_LOADER_BLOCK.block()
+            )
+        );
     }
 
     public static void callForInit() {
@@ -63,6 +60,8 @@ public class BlockEntityRegistry {
             entry.blockEntityId,
             blockEntityType
         );
+
+        if (SpawnerLoader9000.POLYMER_PRESENT) PolymerBlockUtils.registerBlockEntity(blockEntityType);
 
         return entry;
     }

@@ -22,6 +22,7 @@ public class SpawnerLoaderBlockEntity extends BlockEntity implements BlockEntity
         ChunkPos center = new ChunkPos(getPos());
         int diff = SpawnerLoaderBlock.CHUNK_DETECT_RANGE / 2;
 
+        int found = 0;
         for (int dx = -diff; dx <= diff; dx++) {
             for (int dz = -diff; dz <= diff; dz++) {
                 ChunkPos currentChunk = new ChunkPos(
@@ -29,14 +30,15 @@ public class SpawnerLoaderBlockEntity extends BlockEntity implements BlockEntity
                     center.z + dz
                 );
 
-                return world.getChunk(currentChunk.x, currentChunk.z).getBlockEntities().values()
+                found += world.getChunk(currentChunk.x, currentChunk.z).getBlockEntities().values()
                     .parallelStream()
-                    .anyMatch(blockEntity -> blockEntity.getType() == this.getType()
-                                && !blockEntity.getPos().equals(getPos()));
+                    .filter(blockEntity -> blockEntity.getType() == this.getType()
+                                && !blockEntity.getPos().equals(getPos()))
+                    .count();
             }
         }
 
-        return false;
+        return found > 0;
     }
 
     @Override
