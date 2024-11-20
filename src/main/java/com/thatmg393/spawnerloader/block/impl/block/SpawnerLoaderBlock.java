@@ -35,8 +35,8 @@ public class SpawnerLoaderBlock extends Block implements BlockIDGetter, BlockEnt
 	public static final Identifier BLOCK_ID = IdentifierUtils.getIdentifier("spawner_loader_block");
 	public static final BooleanProperty ENABLE_CHUNK_LOADING = BooleanProperty.of("enable_chunk_loading");
 
-	public static final int CHUNK_LOAD_RANGE = 2; // Only odd numbers!!
-	public static final int CHUNK_DETECT_RANGE = 4; // Only even numbers!!
+	public static final int CHUNK_LOAD_RANGE = 2; // Only even numbers!! (this does +1 cus the center chunk)
+	public static final int CHUNK_DETECT_RANGE = 4; // Only even numbers!! (this does +1 cus the center chunk)
 
 	private final ArrayList<ChunkPos> chunkLoadedByThis = new ArrayList<>((CHUNK_LOAD_RANGE + 1) * (CHUNK_LOAD_RANGE + 1)); 
 	
@@ -112,7 +112,11 @@ public class SpawnerLoaderBlock extends Block implements BlockIDGetter, BlockEnt
 	}
 
 	public void loadNearbyChunks(World world, BlockPos pos) {
-		if (!((SpawnerLoaderBlockEntity) world.getBlockEntity(pos)).allowChunkLoading()) return;
+		if (!((SpawnerLoaderBlockEntity) world.getBlockEntity(pos)).allowChunkLoading()) {
+			world.setBlockState(pos, world.getBlockState(pos).with(ENABLE_CHUNK_LOADING, false));
+			return;
+		}
+
 		ChunkPos center = world.getChunk(pos).getPos();
 		int diff = SpawnerLoaderBlock.CHUNK_LOAD_RANGE / 2;
 
@@ -130,11 +134,11 @@ public class SpawnerLoaderBlock extends Block implements BlockIDGetter, BlockEnt
 			}
 		}
 
-		isLoadingChunks = true;
+		isLoadingChunks = false;
 	}
 
 	public void unloadLoadedChunks(World world) {
-		if (chunkLoadedByThis.size() != 0 && isLoadingChunks) return;
+		if (chunkLoadedByThis.size() == 0 || isLoadingChunks) return;
 
 		chunkLoadedByThis.forEach(e -> world.getChunkManager().setChunkForced(e, false));
 		chunkLoadedByThis.removeAll(chunkLoadedByThis);
