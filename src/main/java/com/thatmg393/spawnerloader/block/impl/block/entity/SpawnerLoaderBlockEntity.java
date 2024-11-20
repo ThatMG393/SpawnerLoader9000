@@ -30,15 +30,15 @@ public class SpawnerLoaderBlockEntity extends BlockEntity implements BlockEntity
                     center.z + dz
                 );
 
-                found += world.getChunk(currentChunk.x, currentChunk.z).getBlockEntities().values()
+                if (world.getChunk(currentChunk.x, currentChunk.z).getBlockEntities().values()
                     .parallelStream()
-                    .filter(blockEntity -> blockEntity.getType() == this.getType()
+                    .anyMatch(blockEntity -> blockEntity.getType() == this.getType()
                                 && !blockEntity.getPos().equals(getPos()))
-                    .count();
+                ) return true; // early return
             }
         }
 
-        return found > 0;
+        return false;
     }
 
     @Override
