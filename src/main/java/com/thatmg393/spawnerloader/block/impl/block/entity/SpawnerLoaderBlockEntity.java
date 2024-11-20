@@ -22,7 +22,6 @@ public class SpawnerLoaderBlockEntity extends BlockEntity implements BlockEntity
         ChunkPos center = new ChunkPos(getPos());
         int diff = SpawnerLoaderBlock.CHUNK_DETECT_RANGE / 2;
 
-        int found = 0;
         for (int dx = -diff; dx <= diff; dx++) {
             for (int dz = -diff; dz <= diff; dz++) {
                 ChunkPos currentChunk = new ChunkPos(

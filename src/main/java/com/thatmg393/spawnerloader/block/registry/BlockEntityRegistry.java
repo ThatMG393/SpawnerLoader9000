@@ -22,6 +22,7 @@ public class BlockEntityRegistry {
     public static final Entry<BlockEntityFactory<? extends SpawnerLoaderBlockEntity>, ? extends SpawnerLoaderBlock> SPAWNER_LOADER_BLOCK_ENTITY;
 
     static {
+        BE_TYPES = new HashMap<>();
         SPAWNER_LOADER_BLOCK_ENTITY = register(
             new Entry<>(
                 SpawnerLoaderBlockEntity.BLOCK_ENTITY_ID,
@@ -36,7 +37,7 @@ public class BlockEntityRegistry {
              ((SpawnerLoader9000.POLYMER_PRESENT) ? "vanilla client support!" : "nothing, nothing special."));
     }
 
-    private static final HashMap<Identifier, BlockEntityType<? extends BlockEntity>> BE_TYPES = new HashMap<>();
+    private static final HashMap<Identifier, BlockEntityType<? extends BlockEntity>> BE_TYPES;
 
     public static record Entry<F extends BlockEntityFactory<? extends BlockEntity>, B extends Block>(
         @NotNull Identifier blockEntityId,
